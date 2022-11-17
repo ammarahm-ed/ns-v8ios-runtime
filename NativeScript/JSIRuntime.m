@@ -13,7 +13,7 @@ static std::shared_ptr<facebook::jsi::Runtime> rt;
 
 +(std::shared_ptr<facebook::jsi::Runtime>)runtime {
   if (!rt) {
-    rt = std::make_shared<rnv8::V8Runtime>(tns::Runtime::GetCurrentRuntime()->GetIsolate());
+    rt = std::make_shared<rnv8::V8Runtime>();
   }
   return rt;
 }
