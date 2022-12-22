@@ -184,6 +184,10 @@ class V8Runtime : public facebook::jsi::Runtime {
   bool instanceOf(
       const facebook::jsi::Object &o,
       const facebook::jsi::Function &f) override;
+    
+    uint64_t uint64Value(const facebook::jsi::BigInt&, bool* lossless = nullptr) const override;
+
+    int64_t int64Value(const facebook::jsi::BigInt&, bool* lossless = nullptr) const override;
 
  private:
   friend class V8PointerValue;

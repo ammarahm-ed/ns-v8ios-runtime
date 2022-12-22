@@ -634,6 +634,30 @@ void V8Runtime::setPropertyValue(
   }
 }
 
+uint64_t V8Runtime::uint64Value(const jsi::BigInt &bigInt, bool *lossless) const {
+     v8::Locker locker(isolate_);
+     v8::Isolate::Scope scopedIsolate(isolate_);
+     v8::HandleScope scopedHandle(isolate_);
+     v8::Context::Scope scopedContext(context_.Get(isolate_));
+
+     v8::TryCatch tryCatch(isolate_);
+     auto v8ObjectA = JSIV8ValueConverter::ToV8BigInt(*this, bigInt);
+
+     return v8ObjectA->Uint64Value(lossless);
+ }
+
+ int64_t V8Runtime::int64Value(const jsi::BigInt &bigInt, bool *lossless) const {
+     v8::Locker locker(isolate_);
+     v8::Isolate::Scope scopedIsolate(isolate_);
+     v8::HandleScope scopedHandle(isolate_);
+     v8::Context::Scope scopedContext(context_.Get(isolate_));
+
+     v8::TryCatch tryCatch(isolate_);
+     auto v8ObjectA = JSIV8ValueConverter::ToV8BigInt(*this, bigInt);
+
+     return v8ObjectA->Int64Value(lossless);
+ }
+
 bool V8Runtime::isArray(const jsi::Object &object) const {
   v8::Locker locker(isolate_);
   v8::Isolate::Scope scopedIsolate(isolate_);

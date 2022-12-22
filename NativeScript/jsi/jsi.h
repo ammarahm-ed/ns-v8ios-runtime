@@ -314,6 +314,9 @@ class JSI_EXPORT Runtime {
 
   virtual WeakObject createWeakObject(const Object&) = 0;
   virtual Value lockWeakObject(WeakObject&) = 0;
+    
+    virtual uint64_t uint64Value(const BigInt&, bool *lossless) const = 0;
+    virtual int64_t int64Value(const BigInt&, bool *lossless) const = 0;
 
   virtual Array createArray(size_t length) = 0;
   virtual size_t size(const Array&) = 0;
@@ -493,6 +496,25 @@ class JSI_EXPORT BigInt : public Pointer {
 
   BigInt(BigInt&& other) = default;
   BigInt& operator=(BigInt&& other) = default;
+    
+    /**
+   * Returns the value of this BigInt as an unsigned 64-bit integer.
+   * If `lossless` is provided, it will reflect whether the return value was
+   * truncated or wrapped around. In particular, it is set to `false` if this
+   * BigInt is negative.
+   */
+    uint64_t Uint64Value(Runtime& runtime, bool* lossless = nullptr) const {
+        return runtime.uint64Value(*this, lossless);
+    }
+
+    /**
+     * Returns the value of this BigInt as a signed 64-bit integer.
+     * If `lossless` is provided, it will reflect whether this BigInt was
+     * truncated or not.
+     */
+    int64_t Int64Value(Runtime& runtime, bool* lossless = nullptr) const {
+        return runtime.int64Value(*this, lossless);
+    }
 
   friend class Runtime;
   friend class Value;
